@@ -24,7 +24,7 @@ class SudoSuController extends Controller
 
     public function logout(Request $request)
     {
-        $this->sudoSu->logout();
+        $this->sudoSu->return();
 
         return redirect()->back();
     }

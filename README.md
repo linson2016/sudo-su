@@ -11,7 +11,7 @@ To install the package, simply follow the steps below.
 Install the package using Composer:
 
 ```
-$ composer require viacreative/sudo-su
+$ composer require linson2016/sudo-su
 ```
 
 Add the package's service provider to your app in your project's `AppServiceProvider`:
