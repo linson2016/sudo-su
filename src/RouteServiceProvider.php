@@ -1,6 +1,6 @@
 <?php
 
-namespace VIACreative\SudoSu;
+namespace Linson2016\SudoSu;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as BaseServiceProvider;
@@ -11,7 +11,7 @@ class RouteServiceProvider extends BaseServiceProvider
     {
         Route::group([
             'prefix' => 'sudosu',
-            'namespace' => 'VIACreative\SudoSu\Controllers',
+            'namespace' => 'Linson2016\SudoSu\Controllers',
             'middleware' => ['web']
         ], function () {
             Route::post('/sudosu/login-as-user', 'SudoSuController@loginAsUser')

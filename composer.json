@@ -1,5 +1,5 @@
 {
-    "name": "viacreative/sudo-su",
+    "name": "linson2016/sudo-su",
     "description": "A utility package for logging in as other users",
     "keywords": ["laravel", "debugging"],
     "license": "MIT",
@@ -14,7 +14,7 @@
     },
     "autoload": {
         "psr-4": {
-            "VIACreative\\SudoSu\\": "src/"
+            "Linson2016\\SudoSu\\": "src/"
         }
     }
 }

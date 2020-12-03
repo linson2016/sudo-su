@@ -1,6 +1,6 @@
 <?php
 
-namespace VIACreative\SudoSu;
+namespace Linson2016\SudoSu;
 
 use Illuminate\Auth\AuthManager;
 use Illuminate\Support\Facades\Config;
@@ -15,50 +15,36 @@ class SudoSu
     protected $session;
     protected $sessionKey = 'sudosu.original_id';
     protected $usersCached = null;
+    protected $guard;
 
     public function __construct(Application $app, AuthManager $auth, SessionManager $session)
     {
         $this->app = $app;
         $this->auth = $auth;
         $this->session = $session;
+        $this->guard = config('sudosu.guard','web');
     }
 
-    /**
-     * Stores the ID of the current user in the session so we can return
-     * back to the original account later, then logs the user in
-     * as the user with the given ID.
-     *
-     * @param integer $userId
-     * @param integer $originalUserId
-     * @return void
-     */
-    public function loginAsUser($userId, $originalUserId)
+    public function loginAsUser($userId, $currentUserId)
     {
         $this->session->put('sudosu.has_sudoed', true);
-        $this->session->put($this->sessionKey, $originalUserId);
+        $this->session->put($this->sessionKey, $currentUserId);
 
-        $this->auth->loginUsingId($userId);
+        $this->auth->guard($this->guard)->loginUsingId($userId);
     }
 
-    /**
-     * Logs the user out of the current authenticated account, then returns
-     * the user back to their original account using the ID stored in the
-     * session (if it exists).
-     *
-     * @return bool
-     */
-    public function logout()
+    public function return()
     {
         if (!$this->hasSudoed()) {
             return false;
         }
 
-        $this->auth->logout();
+        $this->auth->guard($this->guard)->logout();
 
         $originalUserId = $this->session->get($this->sessionKey);
 
         if ($originalUserId) {
-            $this->auth->loginUsingId($originalUserId);
+            $this->auth->guard($this->guard)->loginUsingId($originalUserId);
         }
 
         $this->session->forget($this->sessionKey);
@@ -69,12 +55,14 @@ class SudoSu
 
     public function injectToView(Response $response)
     {
+        //dd($this->auth->user());
         $packageContent = view('sudosu::user-selector', [
             'users' => $this->getUsers(),
             'hasSudoed' => $this->hasSudoed(),
             'originalUser' => $this->getOriginalUser(),
-            'currentUser' => $this->auth->user()
+            'currentUser' => $this->auth->guard($this->guard)->user()
         ])->render();
+
 
         $responseContent = $response->getContent();
 
@@ -84,7 +72,7 @@ class SudoSu
     public function getOriginalUser()
     {
         if (!$this->hasSudoed()) {
-            return $this->auth->user();
+            return $this->auth->guard($this->guard)->user();
         }
 
         $userId = $this->session->get($this->sessionKey);

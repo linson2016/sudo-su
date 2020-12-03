@@ -1,6 +1,6 @@
 <?php
 
-namespace VIACreative\SudoSu;
+namespace Linson2016\SudoSu;
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;

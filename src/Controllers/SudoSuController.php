@@ -1,9 +1,9 @@
 <?php
 
-namespace VIACreative\SudoSu\Controllers;
+namespace Linson2016\SudoSu\Controllers;
 
 use Illuminate\Http\Request;
-use VIACreative\SudoSu\SudoSu;
+use Linson2016\SudoSu\SudoSu;
 use Illuminate\Routing\Controller;
 
 class SudoSuController extends Controller
